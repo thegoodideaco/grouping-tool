@@ -1,13 +1,10 @@
-import './config'
+import { CSV_PATHS } from './config'
 import Vue from 'vue'
 import App from './App.vue'
 import '@/assets/style/main.scss'
 import { createApp } from '@vue/composition-api'
 
-export const CSV_PATHS = Array.from(
-  require.context('!!raw-loader!/public/datasets', true, /\.csv$/, 'weak').keys(),
-  path => path.replace('./', '/datasets/')
-)
+console.log(CSV_PATHS)
 
 Vue.config.productionTip = false
 
