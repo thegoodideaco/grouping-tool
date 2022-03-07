@@ -16,6 +16,7 @@
         @input="onFileInput"
         @before:load="records = null">
         <template #default>
+          <!-- eslint-disable-next-line max-len -->
           <div class="bg-gray-600 border border-gray-700 cursor-pointer font-bold px-3 py-1 rounded-sm shadow shadow-sm text-white">
             <span class="fa fa-sm fa-fw fa-file-upload" /> Browse
           </div>
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref, shallowRef, watchPostEffect } from '@vue/composition-api'
+import { computed, defineComponent, ref, shallowRef, watchPostEffect, markRaw } from '@vue/composition-api'
 import { csvParse } from 'd3-dsv'
 import CsvSelect from '../inputs/CsvSelect.vue'
 import DataLoader from '../inputs/DataLoader.vue'
@@ -74,7 +75,7 @@ export default defineComponent({
         globalThis.dataset = val
       }
 
-      records.value = val
+      records.value = markRaw(val)
 
       return val
     }

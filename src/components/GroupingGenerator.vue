@@ -26,12 +26,14 @@
       <div
         v-for="(item, index) in sortedKeys"
         :key="index">
-        <div class="flex items-center bg-white text-black my-2 text-xs rounded overflow-hidden cursor-move">
+        <div
+          class="flex items-center bg-white text-black my-2 text-xs rounded overflow-hidden cursor-move">
           <slot
             name="default"
-            v-bind="{item, index}">
-            <span class="p-2 px-4 bg-blue-400 text-white font-bold font-mono text-sm">
-              {{ index+1 }}
+            v-bind="{ item, index }">
+            <span
+              class="p-2 px-4 bg-blue-400 text-white font-bold font-mono text-sm">
+              {{ index + 1 }}
             </span>
             <span class="p-2">
               {{ item }}
@@ -49,11 +51,19 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject, onBeforeMount, onMounted, ref, shallowRef, unref, watchPostEffect } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  proxyRefs,
+  ref,
+  watchPostEffect
+} from '@vue/composition-api'
 import Draggable from 'vuedraggable'
 import RSelect from './inputs/RSelect.vue'
 import sampleSize from 'lodash/sampleSize'
 import { randomInt } from 'd3-random'
+import { fsum, group, rollup } from 'd3-array'
 
 export default defineComponent({
   components: {
@@ -61,14 +71,18 @@ export default defineComponent({
     RSelect
   },
   props: {
-
-    /** @type {Vue.PropOptions<any[]>} */
+    /** @type {Vue.PropOptions<string[]>} */
     keys: {
       type:     Array,
       required: true
+    },
+
+    valueAccessor: {
+      type:    Function,
+      default: k => Array.isArray(k) ? k[0] : k
     }
   },
-  setup({ keys }) {
+  setup({ keys, valueAccessor }, { emit }) {
     const sortedKeys = ref([])
     const localKeys = ref()
 
@@ -78,13 +92,30 @@ export default defineComponent({
       }
     })
 
-    onBeforeMount(() => {
-      localKeys.value = JSON.parse(JSON.stringify(keys))
+    const groupingFn = computed(() => {
+      if (!sortedKeys.value?.length) {
+        return null
+      }
+
+      const methodArr = Array.from(sortedKeys.value, value => (record) => record[valueAccessor(value)])
+
+      return (dataset) => rollup(dataset, ar => {
+        const _sum = computed(() => fsum(Float32Array.from(ar, valueAccessor)))
+
+        return {
+          ...proxyRefs({
+            records: ar,
+            sum:     _sum,
+            count:   ar.length
+          })
+        }
+      }, ...methodArr)
     })
 
-    watchPostEffect(() => {
-      console.log({
-        sortedKeys
+    onBeforeMount(() => {
+      localKeys.value = JSON.parse(JSON.stringify(keys))
+      watchPostEffect(() => {
+        emit('update:group-fn', groupingFn.value)
       })
     })
 
@@ -103,10 +134,8 @@ export default defineComponent({
   data: () => ({
     // localKeys:   null,
     selectedKey: null
-
   }),
   computed: {
-
     /** @type {() => Record<string, any>} */
     sortOptions() {
       return {
@@ -117,7 +146,9 @@ export default defineComponent({
     /** @type {() => any[]} */
     remainingKeys() {
       if (this.sortedKeys.length) {
-        return this.localKeys.filter(k => this.sortedKeys.indexOf(String(k)) === -1)
+        return this.localKeys.filter(
+          (k) => this.sortedKeys.indexOf(String(k)) === -1
+        )
       } else {
         return this.localKeys
       }
@@ -136,6 +167,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -29,7 +29,7 @@
 
 <script>
 import { CSV_PATHS } from '@/main'
-import { computed, defineComponent, readonly, ref, watchPostEffect } from '@vue/composition-api'
+import { defineComponent, readonly, ref, watchPostEffect } from '@vue/composition-api'
 import { csv } from 'd3-fetch'
 
 export default defineComponent({
@@ -39,7 +39,8 @@ export default defineComponent({
   },
   props: {
     value: {
-      type: String
+      type:    String,
+      default: undefined
     },
     placeholder: String
   },

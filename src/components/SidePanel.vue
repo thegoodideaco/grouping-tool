@@ -3,7 +3,7 @@
     <data-section @input="records = $event" />
 
     <template v-if="records && recordFields">
-      <grouping-section />
+      <grouping-section v-on="$listeners" />
 
       <layout-options-section />
     </template>
@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import { computed, defineComponent, provide, shallowRef } from '@vue/composition-api'
+import { computed, defineComponent, onBeforeMount, provide, shallowRef, watchEffect } from '@vue/composition-api'
 import DataSection from './sections/DataSection.vue'
 import GroupingSection from './sections/GroupingSection.vue'
 import LayoutOptionsSection from './sections/LayoutOptionsSection.vue'
 
 export default defineComponent({
   components: { DataSection, GroupingSection, LayoutOptionsSection },
-  setup() {
+  setup(_props, { emit }) {
     const records = shallowRef()
 
     const recordFields = computed(() => {
@@ -38,6 +38,12 @@ export default defineComponent({
     })
 
     provide('records', records)
+
+    onBeforeMount(() => {
+      watchEffect(() => {
+        emit('update:records', records.value)
+      })
+    })
 
     return {
       records,

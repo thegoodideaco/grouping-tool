@@ -5,17 +5,38 @@
     <!-- Sidebar -->
     <side-panel
       class="grid-panel bg-gray-900 text-white"
-      @update:dataset="loaded = !!$event" />
+      @update:records="updateRecords"
+      @update:group-fn="groupFn = $event" />
 
     <!-- Content -->
-    <main class="grid-content bg-gray-800 text-white">
-      <group-viewer v-if="loaded" />
+    <main class="grid-content bg-gray-800 text-white relative">
+      <template v-if="loaded && groupData">
+        <group-viewer
+
+          ref="group-viewer"
+          class="abs-fill"
+          :group="groupData"
+          :layout="layout" />
+        <div class="info-pane absolute">
+          <p>
+            Total Records: {{ records.length }}
+          </p>
+          <p>
+            Total Nodes: {{ nodes.length }}
+          </p>
+        </div>
+      </template>
     </main>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  ref,
+  shallowRef
+} from '@vue/composition-api'
 import GroupViewer from './components/GroupViewer.vue'
 import SidePanel from './components/SidePanel.vue'
 
@@ -25,10 +46,40 @@ export default defineComponent({
     SidePanel,
     GroupViewer
   },
-  setup() {
-    const loaded = ref(false)
+  setup(_props, _ctx) {
+    const records = shallowRef([])
 
-    return { loaded }
+    const groupViewer = shallowRef()
+
+    const nodes = computed(() => groupViewer.value?.leaves || [])
+
+    const loaded = computed(() => {
+      return !!records.value?.length
+    })
+
+    /** @type {import('@vue/composition-api').Ref<(dataset: any[]) => any>} */
+    const groupFn = shallowRef()
+
+    const groupData = computed(() => {
+      const fn = groupFn.value
+      if (typeof fn === 'function') {
+        return fn(records.value)
+      }
+    })
+
+    return {
+      loaded,
+      groupFn,
+      groupData,
+      records,
+      layout:         'pack',
+      nodes,
+      'group-viewer': groupViewer,
+      updateRecords(_records) {
+        console.log(_records)
+        records.value = _records
+      }
+    }
   }
 })
 </script>
@@ -38,8 +89,7 @@ export default defineComponent({
   display: grid;
   grid-template:
     "panel content" 1fr
-    / minmax(200px, 500px) 1fr;
-
+    / minmax(100px, 500px) 1fr;
 }
 
 .grid {

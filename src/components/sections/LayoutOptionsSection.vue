@@ -1,10 +1,10 @@
 <template>
   <div class="section layout">
     <div>
-      <section-heading
-        title="Hierarchy Settings">
+      <section-heading title="Hierarchy Settings">
         <template #subtitle>
-          <span>Configure visual settings for the hierarchy <em>visualizer</em>.</span>
+          <span>Configure visual settings for the hierarchy
+            <em>visualizer</em>.</span>
         </template>
       </section-heading>
       <div class="summarize-on section flex gap-2">
@@ -15,10 +15,8 @@
             <r-select
               v-model="summarizeOn"
               :items="recordFields">
-              <template #default="{value, index}">
-                <span v-if="index > 0">
-                  {{ value[0] }} ({{ value[1] }})
-                </span>
+              <template #default="{ value, index }">
+                <span v-if="index > 0"> {{ value[0] }} ({{ value[1] }}) </span>
                 <span v-else>
                   {{ value[0] }}
                 </span>
@@ -33,7 +31,7 @@
             <r-select
               v-model="sortOrder"
               :items="['Ascending', 'Descending']">
-              <template #default="{value, index}">
+              <template #default="{ value }">
                 <span>
                   {{ value }}
                 </span>
@@ -48,7 +46,7 @@
             <r-select
               v-model="layoutType"
               :items="['Treemap', 'Circle Pack']">
-              <template #default="{value}">
+              <template #default="{ value }">
                 <span>
                   {{ value }}
                 </span>
@@ -60,11 +58,14 @@
     </div>
 
     <div class="mt-5">
-      <section-heading
-        title="Layout">
+      <section-heading title="Layout">
         <template #subtitle>
           <span>
-            Customize how the <em class="text-yellow-200">{{ layoutType.toLocaleLowerCase() }}</em> layout will display.
+            Customize how the
+            <em class="text-yellow-200">{{
+              layoutType.toLocaleLowerCase()
+            }}</em>
+            layout will display.
           </span>
         </template>
       </section-heading>
@@ -89,35 +90,52 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject, readonly, ref, shallowRef } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  inject,
+  ref,
+  shallowRef
+} from '@vue/composition-api'
 import { pack, treemap } from 'd3-hierarchy'
 import RSelect from '../inputs/RSelect.vue'
 import SectionHeading from './SectionHeading.vue'
 
-const getGeneratorDefaults = (genFn) => Object.fromEntries(Array.from(Object.entries(genFn()).filter(([, v]) => typeof v === 'function'), ([
-  key,
-  val
-]) => {
-  return [
-    key,
-    (typeof val() === 'function' && val().length === 0) ? val()() : val()
-  ]
-}))
+const getGeneratorDefaults = (genFn) =>
+  Object.fromEntries(
+    Array.from(
+      Object.entries(genFn()).filter(([, v]) => typeof v === 'function'),
+      ([
+        key,
+        val
+      ]) => {
+        return [
+          key,
+          typeof val() === 'function' && val().length === 0 ? val()() : val()
+        ]
+      }
+    )
+  )
 
 export default defineComponent({
   components: { SectionHeading, RSelect },
   setup() {
-    const records = inject('records', shallowRef([
-      { name: 'bob' },
-      { name: 'jon' },
-      { name: 'dan' }
-    ]))
+    const records = inject(
+      'records',
+      shallowRef([
+        { name: 'bob' },
+        { name: 'jon' },
+        { name: 'dan' }
+      ])
+    )
 
     const recordFields = computed(() => {
       if (records.value?.length) {
         const _r = records.value[0]
-        const _vals = Array.from(Object.keys(_r), k => {
-          const vals = Array.from(records.value, r => Number.isFinite(+r[k]) ? +r[k] : r[k])
+        const _vals = Array.from(Object.keys(_r), (k) => {
+          const vals = Array.from(records.value, (r) =>
+            Number.isFinite(+r[k]) ? +r[k] : r[k]
+          )
           const count = new Set(vals).size
           return [
             k,
@@ -127,7 +145,7 @@ export default defineComponent({
 
         _vals.unshift([
           '<RECORD_COUNT>',
-          null
+          ''
         ])
 
         return _vals
@@ -151,5 +169,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>
