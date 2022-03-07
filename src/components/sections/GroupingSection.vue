@@ -4,7 +4,9 @@
       title="Configure grouping rules"
       sub-title="Choose which properties you'd like to group, and their order." />
 
-    <grouping-generator :keys="keys">
+    <grouping-generator
+      :keys="keys"
+      v-on="$listeners">
       <!-- <template #default="{item, index}">
         {{ index+1 }}. {{ item }}
       </template> -->

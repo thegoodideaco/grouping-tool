@@ -107,37 +107,10 @@ module.exports = {
 
         // https: true,
         proxy: {
-          global: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          },
-          sales: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          },
-          rollup: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          },
-          regional: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          },
-          affiliate: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          },
-          product: {
-            target:       'https://api.prism.elcdna.com',
-            ws:           true,
-            changeOrigin: true
-          }
-        }
+
+        },
+
+        host: 'localhost'
 
       }
     }

@@ -1,3 +1,4 @@
+
 module.exports = {
   root: true,
 
@@ -8,7 +9,7 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
-
+  /** @type {import('eslint/rules').ESLintRules} */
   rules: {
     'no-console':                              process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger':                             process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -179,7 +180,22 @@ module.exports = {
     ],
     'vue/require-default-prop':      0,
     'vue/key-spacing':               'error',
-    'vue/match-component-file-name': 'error'
+    'vue/match-component-file-name': 'error',
+    'multiline-ternary':             [
+      'error',
+      'always-multiline'
+    ],
+    'no-extra-parens': [
+      'error',
+      'all'
+    ],
+    'max-len': [
+      'error',
+      {
+        code: 120
+
+      }
+    ]
   },
 
   extends: [
