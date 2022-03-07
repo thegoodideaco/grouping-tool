@@ -9,10 +9,11 @@
         <circle
           :key="index"
           class="node"
-          :class="{ leaf: node.children == null }"
+          :class="{ leaf: node.children == null, linked: isNodeConnectedToSelected(node) }"
           :cx="node.x"
           :cy="node.y"
-          :r="node.r">
+          :r="node.r"
+          v-on="getEvents(node)">
           hey
         </circle>
       </template>
@@ -79,6 +80,25 @@ export default defineComponent({
       1
     ])
 
+    const selectedNode = shallowRef()
+    function getEvents(node) {
+      if (node.children) return
+      return {
+        mouseover: () => {
+          selectedNode.value = node
+          console.log('hey', node)
+        },
+        mouseleave: () => {
+          selectedNode.value = null
+        }
+      }
+    }
+    function isNodeConnectedToSelected(node) {
+      if (!selectedNode.value) return false
+
+      return node.data[0] === selectedNode.value.data[0] && node.depth === selectedNode.value.depth
+    }
+
     /**
      * Layout Generator with settings applied
      */
@@ -131,8 +151,17 @@ export default defineComponent({
       containerEl,
       hierarchy: h,
       g:         group,
-      leaves
+      leaves,
+      getEvents,
+      selectedNode,
+      isNodeConnectedToSelected
     }
+  },
+  methods: {
+    // getEvents(node) {
+    //   if (node.children) return
+    //   return { mouseover: () => console.log('hey', node) }
+    // }
   }
 })
 </script>
@@ -141,9 +170,16 @@ export default defineComponent({
 .node {
   fill-opacity: 0.15;
 
+  transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
   &.leaf {
     fill: green;
     fill-opacity: 1;
+    cursor: pointer;
+  }
+
+  &.linked {
+    fill: yellow;
   }
 }
 </style>
