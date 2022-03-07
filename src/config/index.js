@@ -1,8 +1,19 @@
 import Vue from 'vue'
 import VueCompositionApi, * as composition from '@vue/composition-api'
-import { CSV_PATHS } from '@/main'
+
 import axios from 'axios'
 import { csvParse } from 'd3'
+
+export const CSV_PATHS = [
+  '/datasets/marvel_dc_characters.csv',
+  '/datasets/titanic.csv',
+  '/datasets/top_women_chess_players_aug_2020.csv',
+  '/datasets/worldcities.csv'
+]
+// export const CSV_PATHS = Array.from(
+//   require.context('!!raw-loader!/public/datasets', true, /\.csv$/, 'sync').keys(),
+//   path => path.replace('./', '/datasets/')
+// )
 
 Vue.use(VueCompositionApi)
 
