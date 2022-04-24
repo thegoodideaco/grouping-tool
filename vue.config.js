@@ -41,9 +41,7 @@ module.exports = {
      */
     const ignore = ['.*']
 
-    if (process.env.NODE_ENV === 'production') {
-      ignore.push('**/dev/**/*', '**/unused/**/*')
-    }
+    if (process.env.NODE_ENV === 'production') { ignore.push('**/dev/**/*', '**/unused/**/*') }
 
     // const CopyWebpackPlugin = require('copy-webpack-plugin')
     // config.plugins.push(
@@ -72,9 +70,7 @@ module.exports = {
 
       const envExcludes = isDevelopment ? devExcludes : prodExcludes
 
-      if (!process.env.STORYBOOK_MODE) {
-        envExcludes.push('*.stories.js')
-      }
+      if (!process.env.STORYBOOK_MODE) { envExcludes.push('*.stories.js') }
 
       const UnusedWebpackPlugin = require('unused-webpack-plugin')
       config.plugins.push(

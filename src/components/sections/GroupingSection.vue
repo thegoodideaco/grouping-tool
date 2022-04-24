@@ -15,19 +15,33 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject, ref } from '@vue/composition-api'
+import {
+  computed, defineComponent, inject, ref
+} from '@vue/composition-api'
 import GroupingGenerator from '../GroupingGenerator.vue'
 import SectionHeading from './SectionHeading.vue'
 export default defineComponent({
-  components: { GroupingGenerator, SectionHeading },
+  components: {
+    GroupingGenerator,
+    SectionHeading
+  },
   setup() {
-    const records = inject('records', ref([{ foo: 'bar' }]))
+    const records = inject(
+      'records',
+      ref([
+        {
+          foo: 'bar'
+        }
+      ])
+    )
 
     const keys = computed(() => {
       if (records.value?.length) {
         const _r = records.value[0]
-        return Array.from(Object.keys(_r), k => {
-          const vals = Array.from(records.value, r => Number.isFinite(+r[k]) ? +r[k] : r[k])
+        return Array.from(Object.keys(_r), (k) => {
+          const vals = Array.from(records.value, (r) =>
+            Number.isFinite(+r[k]) ? +r[k] : r[k]
+          )
           const count = new Set(vals).size
           return [
             k,
@@ -51,6 +65,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-
-</style>
+<style></style>

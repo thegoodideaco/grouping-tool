@@ -62,8 +62,12 @@ import {
 import Draggable from 'vuedraggable'
 import RSelect from './inputs/RSelect.vue'
 import sampleSize from 'lodash/sampleSize'
-import { randomInt } from 'd3-random'
-import { fsum, group, rollup } from 'd3-array'
+import {
+  randomInt
+} from 'd3-random'
+import {
+  fsum, rollup
+} from 'd3-array'
 
 export default defineComponent({
   components: {
@@ -79,37 +83,47 @@ export default defineComponent({
 
     valueAccessor: {
       type:    Function,
-      default: k => Array.isArray(k) ? k[0] : k
+      default: (k) => String(Array.isArray(k) ? k[0] : k)
     }
   },
-  setup({ keys, valueAccessor }, { emit }) {
+  setup({
+    keys, valueAccessor
+  }, {
+    emit
+  }) {
     const sortedKeys = ref([])
     const localKeys = ref()
 
     const safeKeys = computed(() => {
-      if (keys.length) {
-        return keys.filter(([, cnt]) => cnt > 1 && cnt < 100)
-      }
+      if (keys.length) return keys.filter(([, cnt]) => cnt > 1 && cnt < 100)
     })
 
     const groupingFn = computed(() => {
-      if (!sortedKeys.value?.length) {
-        return null
-      }
+      if (!sortedKeys.value?.length) return null
 
-      const methodArr = Array.from(sortedKeys.value, value => (record) => record[valueAccessor(value)])
+      const methodArr = Array.from(sortedKeys.value, (value) => (record) => {
+        const _n = record[valueAccessor(value)]
+        return String(_n).trim().toLocaleLowerCase()
+      })
 
-      return (dataset) => rollup(dataset, ar => {
-        const _sum = computed(() => fsum(Float32Array.from(ar, valueAccessor)))
+      return (dataset) =>
+        rollup(
+          dataset,
+          (ar) => {
+            const _sum = computed(() =>
+              fsum(Float32Array.from(ar, valueAccessor))
+            )
 
-        return {
-          ...proxyRefs({
-            records: ar,
-            sum:     _sum,
-            count:   ar.length
-          })
-        }
-      }, ...methodArr)
+            return {
+              ...proxyRefs({
+                records: ar,
+                sum:     _sum,
+                count:   ar.length
+              })
+            }
+          },
+          ...methodArr
+        )
     })
 
     onBeforeMount(() => {
@@ -149,9 +163,7 @@ export default defineComponent({
         return this.localKeys.filter(
           (k) => this.sortedKeys.indexOf(String(k)) === -1
         )
-      } else {
-        return this.localKeys
-      }
+      } else return this.localKeys
     }
   },
   methods: {

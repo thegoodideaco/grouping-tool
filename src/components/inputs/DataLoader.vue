@@ -30,7 +30,9 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+import {
+  defineComponent
+} from '@vue/composition-api'
 
 /**
  * The file loader component provides a simple wrapper that loads file data.
@@ -131,9 +133,7 @@ export default defineComponent({
     },
 
     onFocus() {
-      if (this.uploading) {
-        this.onCancel()
-      }
+      if (this.uploading) { this.onCancel() }
     }
   }
 })

@@ -36,7 +36,9 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from '@vue/composition-api'
+import {
+  computed, defineComponent, ref
+} from '@vue/composition-api'
 
 export default defineComponent({
   model: {
@@ -55,7 +57,9 @@ export default defineComponent({
       default:  null
     }
   },
-  setup(props, { emit }) {
+  setup(props, {
+    emit
+  }) {
     const localValue = computed({
       get() {
         return props.value

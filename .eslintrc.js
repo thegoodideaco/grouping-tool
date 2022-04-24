@@ -14,7 +14,6 @@ module.exports = {
     'no-console':                              process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger':                             process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'standard/computed-property-even-spacing': 'off',
-    'object-property-newline':                 'error',
     'array-element-newline':                   [
       'error',
       'always'
@@ -22,8 +21,7 @@ module.exports = {
     'array-bracket-newline': [
       'error',
       {
-        multiline: true,
-        minItems:  3
+        multiline: true
       }
     ],
     'new-cap':                                    'warn',
@@ -40,6 +38,12 @@ module.exports = {
           ImportDeclaration:  true,
           VariableDeclarator: true
         }
+      }
+    ],
+    'object-property-newline': [
+      'error',
+      {
+        allowAllPropertiesOnSameLine: false
       }
     ],
     'vue/max-attributes-per-line': [
@@ -193,7 +197,6 @@ module.exports = {
       'error',
       {
         code: 120
-
       }
     ]
   },

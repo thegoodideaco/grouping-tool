@@ -11,14 +11,22 @@
 </template>
 
 <script>
-import { computed, defineComponent, onBeforeMount, provide, shallowRef, watchEffect } from '@vue/composition-api'
+import {
+  computed, defineComponent, onBeforeMount, provide, shallowRef, watchEffect
+} from '@vue/composition-api'
 import DataSection from './sections/DataSection.vue'
 import GroupingSection from './sections/GroupingSection.vue'
 import LayoutOptionsSection from './sections/LayoutOptionsSection.vue'
 
 export default defineComponent({
-  components: { DataSection, GroupingSection, LayoutOptionsSection },
-  setup(_props, { emit }) {
+  components: {
+    DataSection,
+    GroupingSection,
+    LayoutOptionsSection
+  },
+  setup(_props, {
+    emit
+  }) {
     const records = shallowRef()
 
     const recordFields = computed(() => {

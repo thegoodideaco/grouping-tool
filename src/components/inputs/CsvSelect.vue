@@ -28,9 +28,15 @@
 </template>
 
 <script>
-import { CSV_PATHS } from '@/config'
-import { defineComponent, readonly, ref, watchPostEffect } from '@vue/composition-api'
-import { csv } from 'd3-fetch'
+import {
+  CSV_PATHS
+} from '@/config'
+import {
+  defineComponent, ref, watchPostEffect
+} from '@vue/composition-api'
+import {
+  csv
+} from 'd3-fetch'
 
 export default defineComponent({
   model: {
@@ -44,7 +50,9 @@ export default defineComponent({
     },
     placeholder: String
   },
-  setup(_, { emit }) {
+  setup(_, {
+    emit
+  }) {
     const paths = CSV_PATHS
 
     const localValue = ref(_.value)

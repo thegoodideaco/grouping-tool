@@ -97,7 +97,9 @@ import {
   ref,
   shallowRef
 } from '@vue/composition-api'
-import { pack, treemap } from 'd3-hierarchy'
+import {
+  pack, treemap
+} from 'd3-hierarchy'
 import RSelect from '../inputs/RSelect.vue'
 import SectionHeading from './SectionHeading.vue'
 
@@ -118,14 +120,23 @@ const getGeneratorDefaults = (genFn) =>
   )
 
 export default defineComponent({
-  components: { SectionHeading, RSelect },
+  components: {
+    SectionHeading,
+    RSelect
+  },
   setup() {
     const records = inject(
       'records',
       shallowRef([
-        { name: 'bob' },
-        { name: 'jon' },
-        { name: 'dan' }
+        {
+          name: 'bob'
+        },
+        {
+          name: 'jon'
+        },
+        {
+          name: 'dan'
+        }
       ])
     )
 

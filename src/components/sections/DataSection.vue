@@ -17,7 +17,9 @@
         @before:load="records = null">
         <template #default>
           <!-- eslint-disable-next-line max-len -->
-          <div class="bg-gray-600 border border-gray-700 cursor-pointer font-bold px-3 py-1 rounded-sm shadow shadow-sm text-white">
+          <div
+            class="bg-gray-600 border border-gray-700 cursor-pointer
+            font-bold px-3 py-1 rounded-sm shadow shadow-sm text-white">
             <span class="fa fa-sm fa-fw fa-file-upload" /> Browse
           </div>
         </template>
@@ -28,13 +30,9 @@
       <div
         v-if="records"
         class="flex gap-2">
-        <span>
-          Records: {{ records.length }}
-        </span>
+        <span> Records: {{ records.length }} </span>
 
-        <span>
-          Columns: {{ recordFields.length }}
-        </span>
+        <span> Columns: {{ recordFields.length }} </span>
       </div>
 
       <template v-else>
@@ -45,22 +43,36 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref, shallowRef, watchPostEffect, markRaw } from '@vue/composition-api'
-import { csvParse } from 'd3-dsv'
+import {
+  computed,
+  defineComponent,
+  markRaw,
+  ref,
+  shallowRef,
+  watchPostEffect
+} from '@vue/composition-api'
+import {
+  csvParse
+} from 'd3-dsv'
 import CsvSelect from '../inputs/CsvSelect.vue'
 import DataLoader from '../inputs/DataLoader.vue'
 import SectionHeading from './SectionHeading.vue'
 export default defineComponent({
-  components: { DataLoader, CsvSelect, SectionHeading },
-  setup(props, { emit }) {
+  components: {
+    DataLoader,
+    CsvSelect,
+    SectionHeading
+  },
+  setup(props, {
+    emit
+  }) {
     const records = shallowRef()
 
     const selectedFileName = ref()
 
     /** @type {(param0: {data: any, file: File}) => any[]} */
     const onFileInput = ({
-      file,
-      data
+      file, data
     }) => {
       /** @type {File} */
       const f = file
@@ -80,7 +92,9 @@ export default defineComponent({
       return val
     }
 
-    const onCsvSelect = ({ name, data }) => {
+    const onCsvSelect = ({
+      name, data
+    }) => {
       selectedFileName.value = name
       // debugger
       records.value = data
@@ -91,8 +105,10 @@ export default defineComponent({
     const recordFields = computed(() => {
       if (records.value?.length) {
         const _r = records.value[0]
-        return Array.from(Object.keys(_r), k => {
-          const vals = Array.from(records.value, r => Number.isFinite(+r[k]) ? +r[k] : r[k])
+        return Array.from(Object.keys(_r), (k) => {
+          const vals = Array.from(records.value, (r) =>
+            Number.isFinite(+r[k]) ? +r[k] : r[k]
+          )
           const count = new Set(vals).size
           return [
             k,
@@ -112,16 +128,15 @@ export default defineComponent({
       selectedFileName
     }
   }
-
 })
 </script>
 
 <style lang="scss" scoped>
 .status-text {
-  margin-top: .25rem;
-  font-size: .6rem;
+  margin-top: 0.25rem;
+  font-size: 0.6rem;
   line-height: normal;
-  opacity: .8;
+  opacity: 0.8;
   text-transform: capitalize;
   font-style: italic;
   font-weight: 500;

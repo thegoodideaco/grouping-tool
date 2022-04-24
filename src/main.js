@@ -1,13 +1,18 @@
-import { CSV_PATHS } from './config'
-import Vue from 'vue'
-import App from './App.vue'
-import '@/assets/style/main.scss'
-import { createApp } from '@vue/composition-api'
+/* eslint-disable no-unused-vars */
 
-console.log(CSV_PATHS)
+import {
+  createApp, ref, watch
+} from '@vue/composition-api'
+
+import './config'
+import '@/assets/style/main.scss'
+import App from './App.vue'
+import Vue from 'vue'
 
 Vue.config.productionTip = false
 
-createApp(new Vue({
-  render: h => h(App)
-}).$mount('#app'))
+createApp(
+  new Vue({
+    render: (h) => h(App)
+  }).$mount('#app')
+)
