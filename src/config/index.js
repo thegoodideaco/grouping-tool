@@ -9,16 +9,16 @@ import {
 
 Vue.use(VueCompositionApi)
 
-export const CSV_PATHS = [
-  '/datasets/marvel_dc_characters.csv',
-  '/datasets/titanic.csv',
-  '/datasets/top_women_chess_players_aug_2020.csv',
-  '/datasets/worldcities.csv'
-]
-// export const CSV_PATHS = Array.from(
-//   require.context('!!raw-loader!/public/datasets', true, /\.csv$/, 'sync').keys(),
-//   path => path.replace('./', '/datasets/')
-// )
+// export const CSV_PATHS = [
+//   '/datasets/marvel_dc_characters.csv',
+//   '/datasets/titanic.csv',
+//   '/datasets/top_women_chess_players_aug_2020.csv',
+//   '/datasets/worldcities.csv'
+// ]
+export const CSV_PATHS = Array.from(
+  require.context('!!raw-loader!/public/datasets', true, /\.csv$/, 'weak').keys(),
+  path => path.replace('./', '/datasets/')
+)
 
 if (process.env.NODE_ENV === 'development') {
   const loadCsv = async function (pathOrIndex) {

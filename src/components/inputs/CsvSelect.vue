@@ -58,8 +58,8 @@ export default defineComponent({
     const localValue = ref(_.value)
 
     watchPostEffect(async () => {
-      emit('before:load')
       if (localValue.value) {
+        emit('before:load')
         const data = await csv(localValue.value)
         emit('input', {
           name: localValue.value,
